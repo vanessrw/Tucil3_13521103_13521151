@@ -10,5 +10,5 @@
 ## How to Use
 
 ## Author
-* `Aulia Mey Diva Annandya - 13521103`
-* `Vanessa Rebecca Wiyono - 13521151`
+* Aulia Mey Diva Annandya - 13521103
+* Vanessa Rebecca Wiyono - 13521151
