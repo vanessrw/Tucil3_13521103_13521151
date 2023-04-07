@@ -1,5 +1,4 @@
-# Tucil 3 Stima IF2122
-> A* & UCS shortest path finding
+# Tucil 3 Stima IF2122 : A* & UCS shortest path finding
 
 ## Table of contents
 * [Setup](#setup)
@@ -11,5 +10,5 @@
 ## How to Use
 
 ## Author
-`Aulia Mey Diva Annandya - 13521103
-Vanessa Rebecca Wiyono - 13521151`
+`Aulia Mey Diva Annandya - 13521103`
+`Vanessa Rebecca Wiyono - 13521151`
