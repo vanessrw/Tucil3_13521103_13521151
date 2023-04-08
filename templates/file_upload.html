@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Upload</title>
+  <style>
+    body {
+        background-color: #000000;
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    }
+    h1 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 40px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        border: 3px solid #FFD700;
+        -webkit-text-stroke: 2px #FFD700;
+        padding: 20px;
+    }
+    h2 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 24px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FFD700;
+        margin-top: 50px;
+    }
+    form {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .file-input-container {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #FFD700;
+        padding: 10px;
+        margin-top: 0px;
+    }
+    .upload-container{
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #FFD700;
+        padding: 5px;
+        margin-top: 5px;
+    }
+    
+    .file-input {
+        position: absolute;
+        font-size: 100px;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
+    
+    .file-input-label {
+        display: block;
+        text-align: center;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        color: #555;
+    }
+
+    button {
+        background-color: #FFD700;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        border: none;
+        border-radius: 30px;
+        color: #000000;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin: 6px 4px;
+        cursor: pointer;
+        width: 100px;
+        height: 45px;
+    }
+    .dropdown {
+        display: block;
+        margin: 0 auto;
+        width: 200px;
+        background-color = #FFD700;
+    }
+    .dropdown option {
+        font-size: 18px;
+    }
+    .dropdown-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 0px;
+        height: 45px; /* Adjust the height as needed */
+    }
+    .for-nodes {
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FFD700;
+        margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+    <h1>File Upload</h1>
+    <form action="/process_file" method="post" enctype="multipart/form-data">
+        <h2>
+            Choose a File
+        </h2>
+        <div class="file-input-container">
+            <label class="file-input-label" for="file-input" style="display: inline-block;" ></label>
+            <input type="file" id="file-input" name="file">
+        </div> 
+        <h2>
+            Choose an Algorithm
+        </h2>
+        <div class="dropdown-container">
+            <select class="file-input-container" name="algorithm" style="display: block;" >
+                <option value="astar">A* Algorithm</option>
+                <option value="ucs">UCS Algorithm</option>
+            </select>
+        </div>
+        <input class="upload-container" type="submit" value="Upload" cursor="pointer">
+    </form>
+
+</body>
+</html>

@@ -104,7 +104,7 @@ class algorithm:
 
     def generate(self, element, simpulTujuan):
         hasil = []
-        g = self.jatot(element[1])
+        g = self.totalDistance(element[1])
         x = self.node.index(element[1][-1])
         for i, node in enumerate(self.node):
             if self.matrix[x][i] == 1:

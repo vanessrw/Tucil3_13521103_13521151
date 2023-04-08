@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IF_MAP</title>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='map.css') }}">
+    <style>
+        body {
+            background-color: #000000;
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        }
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 40px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            border: 3px solid #FFD700;
+            -webkit-text-stroke: 2px #FFD700;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            -webkit-text-stroke: 2px #FFD700;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #FFD700;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 30px;
+            color: #000000;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 6px 4px;
+            cursor: pointer;
+            width: 160px;
+            height: 45px;
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+ 
+    <script>
+        var markers = []
+        var id = 1;
+      function initMap() {
+        const Latlng = { lat: -6.8915, lng: 107.6107 };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: Latlng,
+        });
+        
+        map.addListener("click", (mapsMouseEvent) => {
+            
+        let marker = new google.maps.Marker({
+            position: mapsMouseEvent.latLng,
+            map,
+            title: id.toString(),
+            
+        });
+        markers.push(marker);
+
+        const URL = '/this-route'
+        const xhr = new XMLHttpRequest();
+        sender = JSON.stringify([id, mapsMouseEvent.latLng]);
+        xhr.open('POST', URL);
+        xhr.send(sender);
+        id++;
+        });
+      }
+    </script>
+
+  </head>
+  <body>
+    <h1>
+        MAP
+    </h1>
+    <h2>Choose Places to be Nodes</h2>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
