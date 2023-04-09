@@ -42,6 +42,3 @@ def convertToInit(filename, graph, node, matrix) :
         node.append(len(matrix))
 
     # Output the initialized graph, matrix, and node
-    print("Graph:", graph)
-    print("Matrix:", matrix)
-    print("Node:", node)

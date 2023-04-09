@@ -13,8 +13,8 @@
             font-size: 40px;
             font-family: 'Poppins', sans-serif;
             color : #000000;
-            border: 3px solid #FFD700;
-            -webkit-text-stroke: 2px #FFD700;
+            border: 3px solid #FB6B90;
+            -webkit-text-stroke: 2px #FB6B90;
             padding: 20px;
         }
         p {
@@ -23,7 +23,7 @@
             font-size: 28px;
             font-family: 'Poppins', sans-serif;
             color : #000000;
-            -webkit-text-stroke: 2px #FFD700;
+            -webkit-text-stroke: 2px #FB6B90;
             padding: 20px;
         }
         label {
@@ -32,7 +32,7 @@
             font-size: 20px;
             font-family: 'Poppins', sans-serif;
             color : #000000;
-            -webkit-text-stroke: 2px #FFD700;
+            -webkit-text-stroke: 2px #FB6B90;
             margin-top: 100px;
         }
         .input-container {
@@ -40,24 +40,68 @@
             overflow: hidden;
             display: inline-block;
             border-radius: 20px;
-            background-color: #FFD700;
+            background-color: #FB6B90;
             padding: 10px;
             margin-top: 0px;
         }
+        /* Add a border around the images */
+      img {
+        border: 1px solid #ccc;
+      }
+      
+      /* Add some margin and padding to the images */
+      .image-container {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f5f5f5;
+      }
+      
+      /* Center the images */
+      .image-container img {
+        display: block;
+        margin: auto;
+      }
+
+      .image-wrapper {
+        width: 30%;
+        margin: 5% 5% 5% 5%;
+      }
+      .graph {
+        font-weight: bold;
+        font-size: 40px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FB6B90;
+        margin-top: 50px;
+        top: 40%;
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .left-text {
+        width: 10%;
+        text-align: left;
+      }
+      
+      .right-text {
+        width: 10%;
+        text-align: right;
+      }
+    
     </style>
 </head>
 <body>
     <h1>RESULT</h1>
-    <h2>Enter Start and Goal Nodes</h2>
-	<form action="/find_path" method="POST" enctype="multipart/form-data">
-		<label for="start">Start Node:</label>
-		<input class = "input-container" type="text" id="start" name="start"><br><br>
-		<label for="goal">Goal Node:</label>
-		<input class = "input-container" type="text" id="goal" name="goal"><br><br>
-		<input class = "input-container" type="submit" value="Submit">
-        <input type="hidden" name="file_data" value="{{ file_data }}" />
-        <input type="hidden" id="algorithm" name="algorithm" value="{{ algorithm }}"/>
-	</form>
-    <p>{{ result }}</p>
+    <!-- Add a container for each image with a class of "image-container" -->
+    <div class="text-container">
+        <div class="left-text">Left text</div>
+        <div class="right-text">Right text</div>
+    </div>
+
+    <div class = "image-wrapper" style="display: flex;" justify-content: "">
+        <img src={{ imgGraph }} >
+        <img src={{ imgPath}}>
+      </div>
+
 </body>
 </html>

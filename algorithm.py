@@ -29,7 +29,7 @@ class algorithm:
         return meters
 
     def astar(self, start, goal):
-        active_list = [[self.euc_dist(start, goal), [start]]]
+        active_list = [[self.eucDist(start, goal), [start]]]
         while len(active_list) > 0:
             element = active_list[0]
             if element[1][-1] == goal:

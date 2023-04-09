@@ -13,38 +13,33 @@
         font-size: 40px;
         font-family: 'Poppins', sans-serif;
         color : #000000;
-        border: 3px solid #FFD700;
-        -webkit-text-stroke: 2px #FFD700;
+        border: 3px solid #FB6B90;
+        -webkit-text-stroke: 2px #FB6B90;
         padding: 20px;
     }
     h2 {
-        text-align: center;
         font-weight: bold;
         font-size: 24px;
         font-family: 'Poppins', sans-serif;
         color : #000000;
-        -webkit-text-stroke: 2px #FFD700;
+        -webkit-text-stroke: 2px #FB6B90;
         margin-top: 50px;
     }
-    form {
-        text-align: center;
-        margin-top: 10px;
-    }
     .file-input-container {
-        position: relative;
         overflow: hidden;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FFD700;
+        background-color: #FB6B90;
         padding: 10px;
         margin-top: 0px;
     }
     .upload-container{
         position: relative;
+        justify-content: center;
         overflow: hidden;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FFD700;
+        background-color: #FB6B90;
         padding: 5px;
         margin-top: 5px;
     }
@@ -56,6 +51,14 @@
         right: 0;
         top: 0;
     }
+
+    .kiri{
+        justify-content : flex-start;
+    }
+
+    .kanan{
+        justify-content : flex-end;
+    }
     
     .file-input-label {
         display: block;
@@ -66,7 +69,7 @@
     }
 
     button {
-        background-color: #FFD700;
+        background-color: #FB6B90;
         font-weight: bold;
         font-size: 14px;
         font-family: 'Poppins', sans-serif;
@@ -86,15 +89,13 @@
         display: block;
         margin: 0 auto;
         width: 200px;
-        background-color = #FFD700;
+        background-color: #FB6B90;
     }
     .dropdown option {
         font-size: 18px;
     }
     .dropdown-container {
         display: flex;
-        justify-content: center;
-        align-items: center;
         margin-top: 0px;
         height: 45px; /* Adjust the height as needed */
     }
@@ -104,31 +105,135 @@
         font-size: 20px;
         font-family: 'Poppins', sans-serif;
         color : #000000;
-        -webkit-text-stroke: 2px #FFD700;
+        -webkit-text-stroke: 2px #FB6B90;
         margin-top: 100px;
     }
+    .input-container {
+        overflow: hidden;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #FB6B90;
+        padding: 10px;
+        margin-top: 0px;
+    }
+    .start-node {
+        position: absolute;
+        top: 30%;
+        transform: translateX(650%);
+        overflow: hidden;
+        justify-content: flex-end;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #FB6B90;
+        padding: 10px;
+        margin-top: 0px;
+    }
+    .start-node-text {
+        text-align: right;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FB6B90;
+        margin-top: 10px;
+        position: absolute;
+        top: 30%;
+        transform: translateX(850%);
+        overflow: hidden;
+        justify-content: flex-end;
+        display: inline-block;
+    }
+    .goal-node {
+        position: absolute;
+        top: 40%;
+        transform: translateX(650%);
+        overflow: hidden;
+        justify-content: flex-end;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #FB6B90;
+        padding: 10px;
+        margin-top: 0px;
+    }
+    .goal-node-text {
+        text-align: right;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FB6B90;
+        margin-top: 10px;
+        position: absolute;
+        top: 40%;
+        transform: translateX(860%);
+        overflow: hidden;
+        justify-content: flex-end;
+        display: inline-block;
+    }
+    label {
+        text-align: right;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        color : #000000;
+        -webkit-text-stroke: 2px #FB6B90;
+        margin-top: 10px;
+    }
+    .similar-button {
+        background-color: #FB6B90;
+        font-weight: bold;
+        font-size: 14px;
+        font-family: 'Poppins', sans-serif;
+        transform: translateX(530%);
+        border: none;
+        border-radius: 50px;
+        color: #000000;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 100px;
+        cursor: pointer;
+        width: 120px;
+        height: 45px;
+    }
+    
   </style>
 </head>
 <body>
     <h1>File Upload</h1>
     <form action="/process_file" method="post" enctype="multipart/form-data">
-        <h2>
-            Choose a File
-        </h2>
-        <div class="file-input-container">
-            <label class="file-input-label" for="file-input" style="display: inline-block;" ></label>
-            <input type="file" id="file-input" name="file">
-        </div> 
-        <h2>
-            Choose an Algorithm
-        </h2>
-        <div class="dropdown-container">
-            <select class="file-input-container" name="algorithm" style="display: block;" >
-                <option value="astar">A* Algorithm</option>
-                <option value="ucs">UCS Algorithm</option>
-            </select>
+        <div class = "kiri">
+            <h2>
+                Choose a File
+            </h2>
+            <div class="file-input-container">
+                <label class="file-input-label" for="file-input" style="display: inline-block;" ></label>
+                <input type="file" id="file-input" name="file">
+            </div> 
         </div>
-        <input class="upload-container" type="submit" value="Upload" cursor="pointer">
+        
+        <div class = "kiri">
+            <h2>
+                Choose an Algorithm
+            </h2>
+            <div class="dropdown-container">
+                <select class="input-container" name="algorithm" >
+                    <option value="astar">A* Algorithm</option>
+                    <option value="ucs">UCS Algorithm</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div style="display: inline-block;" justify-content="flex-end" align-items="flex-end">
+            <label class="start-node-text" for="start">Start Node:</label>
+		    <input class = "start-node" type="text" id="start" name="start"><br><br>
+		    <label class="goal-node-text" for="goal">Goal Node:</label>
+		    <input class = "goal-node" type="text" id="goal" name="goal"><br><br>
+        </div>
+
+        <input class="similar-button" type="submit" value="Upload" cursor="pointer">
     </form>
 
 </body>

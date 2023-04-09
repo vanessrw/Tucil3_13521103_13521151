@@ -14,8 +14,8 @@
             font-size: 40px;
             font-family: 'Poppins', sans-serif;
             color : #000000;
-            border: 3px solid #FFD700;
-            -webkit-text-stroke: 2px #FFD700;
+            border: 3px solid #FB6B90;
+            -webkit-text-stroke: 2px #FB6B90;
             padding: 20px;
         }
         h2 {
@@ -24,11 +24,11 @@
             font-size: 24px;
             font-family: 'Poppins', sans-serif;
             color : #000000;
-            -webkit-text-stroke: 2px #FFD700;
+            -webkit-text-stroke: 2px #FB6B90;
             margin-top: 10px;
         }
         button {
-            background-color: #FFD700;
+            background-color: #FB6B90;
             font-weight: bold;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
@@ -50,7 +50,7 @@
     <script>
         var markers = []
         var id = 1;
-      function initMap() {
+      function tryMap() {
         const Latlng = { lat: -6.8915, lng: 107.6107 };
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 14,
@@ -87,7 +87,7 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=initMap&libraries=&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=tryMap&libraries=&v=weekly"
       async
     ></script>
   </body>
