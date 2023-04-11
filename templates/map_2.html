@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IF_MAP</title>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='map.css') }}">
+    <style>
+        body {
+            background-color: #000000;
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        }
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 40px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            border: 3px solid #FB6B90;
+            -webkit-text-stroke: 2px #FB6B90;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            -webkit-text-stroke: 2px #FB6B90;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #FB6B90;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 30px;
+            color: #000000;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 6px 4px;
+            cursor: pointer;
+            width: 160px;
+            height: 45px;
+        }
+    </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    
+    <script>
+        var id = 0;
+        var step = 1;
+        
+        coords = [];
+        function myFunc(vars) {
+            return vars;
+        }
+        
+
+      function initMap() {
+        var graph = '{{graph|tojson}}';
+        graph = JSON.parse(graph);
+
+        var node = '{{node|tojson}}';
+        node = JSON.parse(node);
+        
+        const myLatlng = { lat: graph[node[1]][0], lng: graph[node[1]][1] };
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 15,
+          center: myLatlng,
+        });
+        
+        
+        
+        //console.log(graph.length);
+        // Configure the click listener.
+            
+            //bikin marker
+            for (var j = 1; j<=Object.keys(graph).length;j++){
+                let marker = new google.maps.Marker({
+                position: { lat: graph[node[j]][0], lng: graph[node[j]][1]},
+                map,
+                title: node[j],
+                });
+                window.google.maps.event.addListener(marker, 'click', function () {
+                    console.log("click");
+                    if (step == 1){
+                        coords = [];
+                        coords.push(marker.getPosition());
+                        id = marker.getTitle();
+                        
+                    }
+                    else{
+                        coords.push(marker.getPosition());
+                        var line= new google.maps.Polyline({
+                        path: coords,
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2
+                        });   
+                        line.setMap(map);
+
+                        const URL = '/kirim_matriks'
+                        const xhr = new XMLHttpRequest();
+                        sender = JSON.stringify([id, marker.getTitle()]);
+                        xhr.open('POST', URL);
+                        xhr.send(sender);
+                    }
+                    step = step * -1;
+                });
+            }
+
+      }
+    </script>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <h3>
+        IF_MAP
+    </h3>
+    <p> Tekan 2 simpul untuk menambah sisi</p>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
+    <form method="POST" action= "question" enctype="multipart/form-data">
+        <a><button type="submit" class="tombolAtas" value ="submit">Next</button></a>
+    </form>
+    {% block body %}{% endblock %}
+  </body>
+</html>

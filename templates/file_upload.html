@@ -197,6 +197,12 @@
         width: 120px;
         height: 45px;
     }
+    .flash {
+        color: red;
+        font-family: 'Poppins', sans-serif;
+        font-size: 12px;
+        transform: translateX(43.5%);
+    }
     
   </style>
 </head>
@@ -224,17 +230,27 @@
                 </select>
             </div>
         </div>
-
-
-        <div style="display: inline-block;" justify-content="flex-end" align-items="flex-end">
-            <label class="start-node-text" for="start">Start Node:</label>
-		    <input class = "start-node" type="text" id="start" name="start"><br><br>
-		    <label class="goal-node-text" for="goal">Goal Node:</label>
-		    <input class = "goal-node" type="text" id="goal" name="goal"><br><br>
-        </div>
-
-        <input class="similar-button" type="submit" value="Upload" cursor="pointer">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id = "flash_container">
+                    <ul class="flash">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+        <input class="similar-button" type="submit" value="Next" cursor="pointer">
     </form>
-
+    <script>
+        // Get all flash messages
+        var flashContainer = document.getElementById('flash-container');
+    
+        // Set a timer to remove each flash message after 2 seconds
+        setTimeout(function() {
+            flashContainer.parentNode.removeChild(flashContainer);
+        }, 2000);
+    </script>
 </body>
 </html>

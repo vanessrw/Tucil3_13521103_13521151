@@ -50,29 +50,91 @@
     <script>
         var markers = []
         var id = 1;
+        var edgeMode = false;
+      
+        function startEdgeMode() {
+          edgeMode = true;
+          console.log("edgeMode is now true");
+          alert("Click the first node to start building an edge.");
+        }
       function tryMap() {
         const Latlng = { lat: -6.8915, lng: 107.6107 };
         const map = new google.maps.Map(document.getElementById("map"), {
           zoom: 14,
           center: Latlng,
         });
-        
-        map.addListener("click", (mapsMouseEvent) => {
-            
-        let marker = new google.maps.Marker({
-            position: mapsMouseEvent.latLng,
-            map,
-            title: id.toString(),
-            
-        });
-        markers.push(marker);
 
-        const URL = '/this-route'
-        const xhr = new XMLHttpRequest();
-        sender = JSON.stringify([id, mapsMouseEvent.latLng]);
-        xhr.open('POST', URL);
-        xhr.send(sender);
-        id++;
+        alert("haha");
+
+        let edgeStartNode = null; // add this line
+        let nodes = []; // to keep track of selected nodes
+        let edges = []; // to keep track of selected edges
+        map.addListener("click", (mapsMouseEvent) => {
+          if (edgeMode) {
+            alert("masuk");
+            // Get the ID of the clicked marker
+            let clickedId = null;
+            for (let i = 0; i < markers.length; i++) {
+                if (markers[i].getPosition().equals(mapsMouseEvent.latLng)) {
+                    clickedId = markers[i].getTitle();
+                    break;
+                }
+            }
+            if (clickedId == null) {
+                alert("Please select a valid node.");
+                return;
+            }
+    
+            // If this is the first node being selected, save it and prompt the user to select the second node
+            if (edgeStartNode == null) {
+                edgeStartNode = clickedId;
+                alert("Click the second node to complete the edge.");
+            }
+            // If this is the second node being selected, save the edge and exit edge mode
+            else {
+                let edgeEndNode = clickedId;
+                let newEdge = [edgeStartNode, edgeEndNode];
+                edges.push(newEdge);
+                alert("Edge added between nodes " + edgeStartNode + " and " + edgeEndNode);
+                edgeMode = false;
+                edgeStartNode = null;
+            }
+            // Add a new marker
+            let marker = new google.maps.Marker({
+              position: mapsMouseEvent.latLng,
+              map,
+              title: id.toString(),
+            });
+            // Change the color of the selected marker
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+
+            markers.push(marker);
+
+            // Send the new node to the server
+            const URL = '/add-node';
+            const xhr = new XMLHttpRequest();
+            sender = JSON.stringify([id, mapsMouseEvent.latLng]);
+            xhr.open('POST', URL);
+            xhr.send(sender);
+            id++;
+          } else {
+            // Add a new marker
+            let marker = new google.maps.Marker({
+              position: mapsMouseEvent.latLng,
+              map,
+              title: id.toString(),
+            });
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+            markers.push(marker);
+
+            // Send the new node to the server
+            const URL = '/add-node';
+            const xhr = new XMLHttpRequest();
+            sender = JSON.stringify([id, mapsMouseEvent.latLng]);
+            xhr.open('POST', URL);
+            xhr.send(sender);
+            id++;
+          }
         });
       }
     </script>
@@ -90,5 +152,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=tryMap&libraries=&v=weekly"
       async
     ></script>
+
+    <button onclick="startEdgeMode()">Add Edge</button>
   </body>
 </html>

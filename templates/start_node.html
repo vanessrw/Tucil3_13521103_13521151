@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>START NODE</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #000000;
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        }
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 40px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            border: 3px solid #FB6B90;
+            -webkit-text-stroke: 2px #FB6B90;
+            padding: 20px;
+        }
+        h2 {
+          font-weight: bold;
+          font-size: 24px;
+          font-family: 'Poppins', sans-serif;
+          color : #000000;
+          -webkit-text-stroke: 2px #FB6B90;
+        }
+        ul{
+            font-weight: bold;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            -webkit-text-stroke: 2px #FB6B90;
+            margin-top: 130px;  
+        }
+        .start-node {
+            position: absolute;
+            top: 45%;
+            transform: translateX(80%);
+            overflow: hidden;
+            justify-content: flex-end;
+            display: inline-block;
+            border-radius: 20px;
+            background-color: #FB6B90;
+            padding: 10px;
+            margin-top: 0px;
+        }
+        .start-node-text {
+            text-align: right;
+            font-weight: bold;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            color : #000000;
+            -webkit-text-stroke: 2px #FB6B90;
+            margin-top: 10px;
+            position: absolute;
+            top:45%;
+            transform: translateX(-0%);
+            overflow: hidden;
+            justify-content: flex-end;
+            display: inline-block;
+        }
+        form {
+          text-align: center;
+          margin-top: 10px;
+        }
+        .similar-button {
+            background-color: #FB6B90;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transform: translateX(50%);
+            border: none;
+            border-radius: 50px;
+            color: #000000;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 100px;
+            cursor: pointer;
+            width: 120px;
+            height: 45px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Starting Node</h1>
+    <ul>
+        Nodes : 
+        {% for item in name %}
+            <li>{{ loop.index }}. {{ item }}</li>
+        {% endfor %}
+    </ul>
+    <form action="/start_node" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="file_path" value="{{ session['file_path'] }}">
+        <input type="hidden" name="algorithm" value="{{ session['algorithm'] }}">
+        <div style="display: inline-block;" justify-content="flex-end" align-items="flex-end"> 
+            <label class="start-node-text" for="start">Start Node:</label>
+            <input class = "start-node" type="text" id="start" name="start"><br><br>
+        </div>
+        <input class="similar-button" type="submit" value="Next" cursor="pointer">
+    </form>
+</body>
+</html>
