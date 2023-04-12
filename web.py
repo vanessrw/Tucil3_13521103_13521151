@@ -14,10 +14,7 @@ import json
 app = Flask(__name__)
 app.secret_key = 'stima'
 
-graph = {}
-matrix = []
-node = [""]
-buatAstar = []
+locations = []
 
 def jinja2_enumerate(iterable, start=0):
     return enumerate(iterable, start=start)
@@ -28,6 +25,25 @@ env.filters['enumerate'] = jinja2_enumerate
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/add_node', methods=['POST'])
+def add_node():
+    # Retrieve the location coordinates from the request data
+    lat = float(request.form['lat'])
+    lng = float(request.form['lng'])
+    
+    # Add the location to the locations list
+    locations.append((lat, lng))
+    
+    for i in locations:
+        print(i)
+    
+    return ''
+
+@app.route('/display_locations')
+def display_locations():
+    # Display the locations as a list
+    return '<br>'.join(str(location) for location in locations)
 
 @app.route('/map')
 def map():
