@@ -84,12 +84,13 @@ def exc_node2():
     algorithm = request.form['algorithm']
     file_path = request.form['file_path']
     start = request.form['start']
+    name = session['name']
     
-    graph = ubahGraf(file_path)
-    with open(file_path, 'r') as f:
-        # nodes name
-        line = f.readline()
-        name = [str(x) for x in line.strip().split(',')]
+    # graph = ubahGraf(file_path)
+    # with open(file_path, 'r') as f:
+    #     # nodes name
+    #     line = f.readline()
+    #     name = [str(x) for x in line.strip().split(',')]
 
     return render_template('goal_node.html', algorithm=algorithm, file_path=file_path, name=name, start=start)
 
@@ -135,19 +136,14 @@ def result():
     file_path = request.form['file_path']
     start = request.form['start']
     goal = request.form['goal']
+    name = session['name']
     
     if(goal == ''):
-        return render_template('node_kosong2.html', file_path=file_path, algorithm=algorithm)
+        return render_template('node_kosong2.html', file_path=file_path, algorithm=algorithm, name=name)
     
     for i in goal:
         if not i.isdigit():
-            return render_template('right_number2.html', file_path=file_path, algorithm=algorithm)
-    
-    graph = ubahGraf(file_path)
-    with open(file_path, 'r') as f:
-        # nodes name
-        line = f.readline()
-        name = [str(x) for x in line.strip().split(',')]
+            return render_template('right_number2.html', file_path=file_path, algorithm=algorithm, name=name)
     
     goal = int(goal)
     start_node = int(start)
@@ -164,13 +160,18 @@ def result():
     
     if(goal_node>=start_node):
         goal_node += 1
-
+    
+    graph = ubahGraf(file_path)   
+    with open(file_path, 'r') as f:
+        # nodes name
+        line = f.readline()
+        name = [str(x) for x in line.strip().split(',')]
+    
     # Plot graf awal
     path = []
     imgawal = plot(graph, name, path, "graphawal.png")
     imgGraph = "static/graphawal.png"
     
-    print(algorithm)
     
     if algorithm == 'astar':
         astar_iteration, astar_cost, astar_path = astar(graph, start_node, goal_node, name)
@@ -190,7 +191,7 @@ def result():
         ucs_iteration, ucs_cost, ucs_path = ucs(graph, start_node, goal_node, name)
         ucs_time = timeit(lambda: ucs(graph, start_node, goal_node, name), number=1) * 1000
         # output = result("UCS", name, start_node, goal_node, ucs_iteration, ucs_cost, ucs_path, ucs_time)
-        algo = "A*"
+        algo = "UCS"
         sn = name[start_node]
         en = name[goal_node]
         path = ucs_path
