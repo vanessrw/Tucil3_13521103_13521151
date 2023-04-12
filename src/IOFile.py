@@ -7,6 +7,63 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+def is_valid_input_format(filename):
+    with open(filename, 'r') as f:
+        try:
+            # read the first line containing the number of nodes
+            num_nodes = int(f.readline().strip())
+
+            # read the remaining lines containing the nodes' coordinates and names
+            for i in range(num_nodes):
+                line = f.readline().strip()
+                if len(line.split()) != 3:
+                    return False
+
+            # read the adjacency matrix lines
+            for i in range(num_nodes):
+                line = f.readline().strip()
+                if len(line.split()) != num_nodes:
+                    return False
+
+            # if all lines were read successfully, the format is valid
+            return True
+
+        except ValueError:
+            # if there is an error while reading the file, the format is invalid
+            return False
+
+
+def parse_input_file(file_path):
+    # read input file
+    with open(file_path) as f:
+        n = int(f.readline().strip())
+        coords = {}
+        for i in range(n):
+            lat, long, name = f.readline().strip().split()
+            coords[i] = {'name': name, 'lat': float(lat), 'long': float(long)}
+        graph = [[int(x) for x in line.strip().split()] for line in f.readlines()]
+
+    name_to_index = {coords[i]['name']: i for i in range(n)}
+    index_to_name = {i: coords[i]['name'] for i in range(n)}
+    result = [[0 for j in range(n)] for i in range(n)]
+
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] == 1:
+                result[i][j] = ((coords[i]['lat'] - coords[j]['lat']) ** 2 + 
+                                (coords[i]['long'] - coords[j]['long']) ** 2) ** 0.5
+            else:
+                result[i][j] = 0
+
+    # write the result to a new file
+    parsed_file_path = 'parsed.txt'
+    with open(parsed_file_path, 'w') as f:
+        f.write(','.join(index_to_name[i] for i in range(n)) + '\n')
+        for i in range(n):
+            f.write(' '.join(str(x) for x in result[i]) + '\n')
+    return parsed_file_path
+
+
 # ----- INPUT -----
 def inputFile():
     while True:
@@ -18,10 +75,13 @@ def inputFile():
                                    title="Select Input File",
                                    filetypes=(("Text files", "*.txt"), ("All files", "*.*")))
         root.destroy()
-        
+        if is_valid_input_format(filepath):
+            # if format is valid, parse the file
+            f = parse_input_file(filepath)
+            # print("File parsed successfully.")
         try:
-            with open(filepath, 'r') as f:
-                # nodes name
+            # with open(filepath, 'r') as f:
+                # nodes namea
                 line = f.readline()
                 name = [str(x) for x in line.strip().split(',')]
                 size = len(name)
@@ -58,6 +118,10 @@ def inputFile():
         
 def ubahGraf(filepath):
     try:
+        if is_valid_input_format(filepath):
+                # if format is valid, parse the file
+            filepath = parse_input_file(filepath)
+                # print("File parsed successfully.")        
         with open(filepath, 'r') as f:
             # nodes name
             line = f.readline()
