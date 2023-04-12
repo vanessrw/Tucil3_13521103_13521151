@@ -235,8 +235,8 @@ def plot(graph, name, path, filename):
     # Plot weighted graph
     pos = nx.spring_layout(G)
     nx.draw(G, pos, with_labels=True, font_weight='bold', font_color='black', node_color = 'pink') #bulet" nodesnya
-    edge_labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_weight='bold') #weight angka ditengah" rute
+    edge_labels = {(u, v): format(d['weight'], '.3f') for u, v, d in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_weight='bold')
     edge_colors = ['black' if (path[i], path[i+1]) in nx.edges(G) else 'k' for i in range(len(path)-1)]
     nx.draw_networkx_edges(G, pos, edgelist=[(path[i], path[i+1]) for i in range(len(path)-1)], edge_color='pink', width=5)
     nx.draw_networkx_edges(G, pos, edge_color=edge_colors)
