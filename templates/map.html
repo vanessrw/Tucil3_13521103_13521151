@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Google Maps</title>
+    <title>IF_MAP</title>
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='map.css') }}">
     <style>
         body {
             background-color: #24496E;
@@ -17,124 +18,204 @@
             -webkit-text-stroke: 2px #F8D669;
             padding: 20px;
         }
+        h2 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 24px;
+            font-family: 'Poppins', sans-serif;
+            color : #24496E;
+            -webkit-text-stroke: 2px #F8D669;
+            margin-top: 10px;
+        }
+        button {
+            background-color: #F8D669;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            border: none;
+            border-radius: 30px;
+            color: #24496E;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 6px 4px;
+            cursor: pointer;
+            width: 160px;
+            height: 45px;
+        }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=initMap&libraries=&v=weekly"></script>
-    <script>
-      var map;
-      var markers = [];
-      var fromNode, toNode;
-      var edges = [];
-      var mapClickListener;
-      function initMap() {
-        var location = {lat: -6.888283, lng: 107.611066}; // replace with your own coordinates
-        map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 15,
-          center: location
-        });
-        // Create an empty array to store the markers
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+ 
+<script>
+  var markers = [];
+  var id = 1;
+  var edgeMode = false;
+  var nodeHoverColor = 'red';
+  var nodeDefaultColor = 'green';
+  var chosenNodes = [];
+  var edges = [];
+  var polylines = [];
+  var edgeStartNode = null;
 
-        // Add a click event listener to the map
-        // Add a click event listener to the map
-        mapClickListener = map.addListener('click', function(event) {
-            addMarker(event.latLng);
+  function createPolyline(startMarker, endMarker) {
+          let polyline = new google.maps.Polyline({
+            path: [startMarker.getPosition(), endMarker.getPosition()],
+            geodesic: true,
+            strokeColor: "red",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
           });
+          polyline.setMap(map);
+          polylines.push(polyline);
+  }
 
+  function startEdgeMode() {
+    edgeMode = true;
+    console.log("edgeMode is now true");
+    alert("Click the first node to start building an edge.");
+  }
+  
+  function startEdgeMode() {
+    edgeMode = true;
+    console.log("edgeMode is now true");
+    alert("Click the first node to start building an edge.");
+  }
+ 
+  function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // Distance in km
+    return d;
+  }
 
-      }
-      function addMarker(location) {
-        // Create a marker for the clicked location
-        var marker = new google.maps.Marker({
-          position: location,
-          map: map
-        });
+  function deg2rad(deg) {
+    return deg * (Math.PI/180);
+  }
 
-        markers.push(marker);
+  let nodeCount = 0;
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/add_node", true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("lat=" + location.lat() + "&lng=" + location.lng());
+  function Node(position) {
+    nodeCount++;
+    this.id = nodeCount;
+    this.position = position;
+  }
 
-        // Add an event listener to the marker
-        var node = markers.length - 1;
-        marker.addListener('click', function(event) {
-          selectNode(node);
-        });
-      }
+  function tryMap() {
+  const Latlng = { lat: -6.8915, lng: 107.6107 };
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 14,
+    center: Latlng,
+  });
 
-      function addEdge() {
-        if (!fromNode) {
-          alert('Please select the starting node for the edge.');
-          return;
-        }
-        if (!toNode) {
-          alert('Please select the ending node for the edge.');
-          return;
-        }
-        if (fromNode == toNode) {
-          alert('The starting and ending nodes cannot be the same.');
-          return;
-        }
-        var edge = [fromNode, toNode];
-        edges.push(edge);
-        var line = new google.maps.Polyline({
-          path: [markers[fromNode].getPosition(), markers[toNode].getPosition()],
-          map: map,
-          strokeColor: '#FF0000',
-          strokeWeight: 2
-        });
-        fromNode = null;
-        toNode = null;
+  let edgeStartNode = null;
+  let nodes = [];
+  let edges = [];
 
-        google.maps.event.removeListener(mapClickListener);
-      }
+  // Function to change the color of the marker when hovering
+  function changeMarkerColor(marker, color) {
+    marker.setIcon(`http://maps.google.com/mapfiles/ms/icons/${color}-dot.png`);
+  }
 
-      function selectNode(node) {
-        if (!fromNode) {
-          fromNode = node;
-          alert('Please select the ending node for the edge.');
-        } else if (!toNode) {
-          toNode = node;
-          addEdge();
-        }
-      }
-      function processMap() {
-        var numNodes = markers.length;
-        var adjMatrix = [];
-        for (var i = 0; i < numNodes; i++) {
-          adjMatrix[i] = [];
-          for (var j = 0; j < numNodes; j++) {
-            adjMatrix[i][j] = 0;
-          }
-        }
-        for (var k = 0; k < edges.length; k++) {
-          var edge = edges[k];
-          adjMatrix[edge[0]][edge[1]] = 1;
-          adjMatrix[edge[1]][edge[0]] = 1;
-        }
-        console.log(numNodes);
-        for (var i = 0; i < numNodes; i++) {
-          console.log(markers[i].getPosition().lat(), markers[i].getPosition().lng(), "Node " + i);
-        }
-        for (var i = 0; i < numNodes; i++) {
-          var row = '';
-          for (var j = 0; j < numNodes; j++) {
-            row += adjMatrix[i][j] + ' ';
-          }
-          console.log(row.trim());
+  map.addListener('click', (mapsMouseEvent) => {
+    if (edgeMode) {
+      // Get the ID of the clicked marker
+      let clickedId = null;
+      for (let i = 0; i < markers.length; i++) {
+        const markerPosition = markers[i].getPosition();
+        const clickPosition = mapsMouseEvent.latLng;
+
+        // calculate distance between click position and marker position
+        const distance = haversineDistance(markerPosition.lat(), markerPosition.lng(), clickPosition.lat(), clickPosition.lng());
+
+        // if the distance is less than the click radius, select the marker
+        if (distance <= 50) {
+          clickedId = markers[i].getTitle();
+          break;
         }
       }
-      
+      if (clickedId == null) {
+        alert("Please select a valid node.");
+        return;
+      }
+
+      // If this is the first node being selected, save it and prompt the user to select the second node
+      if (edgeStartNode == null) {
+        edgeStartNode = parseInt(clickedId);
+        alert("Click the second node to complete the edge.");
+      }
+      // If this is the second node being selected, save the edge and exit edge mode
+      else {
+        let edgeEndNode = parseInt(clickedId);
+        let newEdge = [edgeStartNode, edgeEndNode];
+        edges.push(newEdge);
+        alert("Edge added between nodes " + edgeStartNode + " and " + edgeEndNode);
+        edgeMode = false;
+        edgeStartNode = null;
+
+        // Draw a polyline to represent the new edge
+        createPolyline(markers.find(marker => marker.getTitle() == edgeStartNode.toString()), markers.find(marker => marker.getTitle() == edgeEndNode.toString()));
+      }
+
+    } else {
+      // Add a new marker
+      let marker = new google.maps.Marker({
+        position: mapsMouseEvent.latLng,
+        map,
+        title: id,
+        icon: `http://maps.google.com/mapfiles/ms/icons/${nodeDefaultColor}-dot.png`
+      });
+
+      // Change marker color when hovering
+      marker.addListener('mouseover', function () {
+        changeMarkerColor(marker, nodeHoverColor);
+      });
+      marker.addListener('mouseout', function () {
+        changeMarkerColor(marker, nodeDefaultColor);
+      });
+
+      markers.push(marker);
+      nodes.push(id);
+
+      // Send the new node to the server
+      const URL = '/add-node';
+      const xhr = new XMLHttpRequest();
+      sender = JSON.stringify([id, mapsMouseEvent.latLng]);
+      xhr.open('POST', URL);
+      xhr.send(sender);
+      id++;
+    }
+  });
+}
+
+</script>
 
 
-    </script>
   </head>
-  <body onload="initMap()">
+  <body>
     <h1>
-        Choose Your Nodes
+        MAP
     </h1>
-    <div id="map" style="height: 500px;"></div>
-    <button onclick="addEdge()">Add Edge</button>
+    <h2>Choose Places to be Nodes</h2>
+    <div id="map"></div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAODM10I674sTi_1kX905YhiM0QdzkFseY&callback=tryMap&libraries=&v=weekly"
+      async
+    ></script>
+
+    <button id="add-edge-btn" 
+    style="transition: opacity 0.2s;" 
+    onmouseover="this.style.opacity = '0.8';" 
+    onmouseout="this.style.opacity = '1';"
+    onclick="startEdgeMode(); this.disabled=true;">Add Edge</button>
+
   </body>
 </html>
-
