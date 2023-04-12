@@ -4,7 +4,6 @@ import src
 import io
 from src.IOFile import *
 from src.algorithm import *
-from algorithm import *
 from timeit import timeit
 from werkzeug.utils import secure_filename
 from jinja2 import Environment
