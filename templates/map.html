@@ -75,6 +75,18 @@
           alert('The starting and ending nodes cannot be the same.');
           return;
         }
+
+        // Send the new edge information to the server
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/add_edge", true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("from=" + fromNode + "&to=" + toNode);
+        // Change the text on the button to "Next"
+        var nextButton = document.getElementById("nextButton");
+        nextButton.style.display = "block";
+        var addButton = document.getElementById("addButton");
+        addButton.style.display = "none";
+
         var edge = [fromNode, toNode];
         edges.push(edge);
         var line = new google.maps.Polyline({
@@ -85,7 +97,8 @@
         });
         fromNode = null;
         toNode = null;
-
+      
+        // Remove the click event listener from the map
         google.maps.event.removeListener(mapClickListener);
       }
 
@@ -94,6 +107,11 @@
           fromNode = node;
           alert('Please select the ending node for the edge.');
         } else if (!toNode) {
+          if (node === fromNode) { // check if user clicked on the same node twice
+            fromNode = null;
+            toNode = null;
+            return;
+          }
           toNode = node;
           addEdge();
         }
@@ -124,8 +142,12 @@
           console.log(row.trim());
         }
       }
-      
-
+      function nextStep() {
+        var startNode = prompt("Please enter the starting node (0-" + (markers.length-1) + "):");
+        var goalNode = prompt("Please enter the goal node (0-" + (markers.length-1) + "):");
+    
+        // Do something with the start and goal nodes
+    }
 
     </script>
   </head>
@@ -134,7 +156,10 @@
         Choose Your Nodes
     </h1>
     <div id="map" style="height: 500px;"></div>
-    <button onclick="addEdge()">Add Edge</button>
+    <button id="addButton" onclick="addEdge()">Add Edge</button>
+
+  <!-- Add a new button for "Next" and hide it by default -->
+  <button id="nextButton" onclick="nextStep()" style="display:none;">Next</button>
   </body>
 </html>
 

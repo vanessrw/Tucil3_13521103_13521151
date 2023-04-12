@@ -37,6 +37,8 @@ def add_node():
     
     for i in locations:
         print(i)
+        
+    print("================================")
     
     return ''
 
