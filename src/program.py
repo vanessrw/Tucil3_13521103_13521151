@@ -3,15 +3,6 @@ from algorithm import astar, ucs
 from timeit import timeit
 
 def start():
-    # file = open('../test/matrix.txt', 'r')
-    # test = "../test/matrix.txt"
-    # line = file.readline()
-    # name = [str(x) for x in line.strip().split(',')]
-    # size = len(name)
-    # print(size)
-    # graph = ubahGraf(file)
-    
-    # print(name)
     filepath = "../test/weight.txt"
     graph = ubahGraf("../test/weight.txt")
     
