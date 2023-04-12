@@ -1,11 +1,38 @@
 import math
 from queue import PriorityQueue
 
-class algorithm:
-    def __init__ (self, graph, matrix):
-        self.graph = graph.copy()
-        self.matrix = matrix.copy()
-        self.node = list(graph.keys())
+class Graph:
+    def __init__(self, filename):
+        self.nodes = []
+        self.edges = []
+        self.graph = {}
+        self.adj_matrix = []
+
+    def read_graph(self, filename):
+        # Read file and store data
+        with open(filename, 'r') as f:
+            data = f.readlines()[1:]
+            for line in data:
+                node = line.strip().split()
+                self.nodes.append(node[2])
+                self.graph[node[2]] = (float(node[0]), float(node[1]))
+
+        # Create adjacency matrix
+        num_nodes = len(self.nodes)
+        self.adj_matrix = [[0 for _ in range(num_nodes)] for _ in range(num_nodes)]
+
+        # Calculate distances and fill in matrix
+        for i in range(num_nodes):
+            for j in range(num_nodes):
+                if i != j:
+                    dist = self.eucDist(self.nodes[i], self.nodes[j])
+                    self.adj_matrix[i][j] = dist
+                    
+    
+    def write_matrix(self, filename):
+        with open(filename, 'w') as f:
+            for row in self.graph:
+                f.write(' '.join(map(str, row)) + '\n')
 
     def eucDist(self, s1, s2):
         # latitude and longitude
@@ -126,3 +153,15 @@ class algorithm:
 
     def sorting(self, element):
         return element[0]
+
+
+filename = 'test/alun2.txt'
+graph = Graph(filename)
+adjm = graph.read_graph(filename)
+print(adjm)
+
+adj_matrix = graph.adj_matrix
+output_file = 'adj_matrix.txt'
+
+for row in adj_matrix:
+    print(row)
