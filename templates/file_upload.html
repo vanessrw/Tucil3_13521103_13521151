@@ -233,13 +233,17 @@
                     Choose an Algorithm
                 </h2>
                 <div class="dropdown-container">
-                    <select class="input-container" name="algorithm" >
+                    <select class="input-container" name="algorithm" style="transition: opacity 0.2s;" 
+                    onmouseover="this.style.opacity = '0.8';" 
+                    onmouseout="this.style.opacity = '1';" >
                         <option value="astar">A* Algorithm</option>
                         <option value="ucs">UCS Algorithm</option>
                     </select>
                 </div>
             </div>
-            <input class="similar-button" type="submit" value="Next" cursor="pointer">
+            <input class="similar-button" type="submit" value="Next" cursor="pointer" style="transition: opacity 0.2s;" 
+            onmouseover="this.style.opacity = '0.8';" 
+            onmouseout="this.style.opacity = '1';">
         </form>
         <img src="../static/nyantey.png" alt="Santai" height="300px" width="300px"></img>
     </div>

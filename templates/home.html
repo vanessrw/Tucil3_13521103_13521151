@@ -68,10 +68,14 @@
       <div class="div2">
         <h2>Choose Input</h2>
         <form action="{{ url_for('home') }}" method="POST">
-          <button type="button" onclick="location.href='{{ url_for('map') }}'">MAP</button>
+          <button type="button" onclick="location.href='{{ url_for('map') }}'" style="transition: opacity 0.2s;" 
+          onmouseover="this.style.opacity = '0.8';" 
+          onmouseout="this.style.opacity = '1';">MAP</button>
         </form>
         <form action="{{ url_for('home') }}" method="POST">
-            <button type="button" onclick="location.href='{{ url_for('file_upload') }}'">FILE UPLOAD</button>
+            <button type="button" onclick="location.href='{{ url_for('file_upload') }}'" style="transition: opacity 0.2s;" 
+            onmouseover="this.style.opacity = '0.8';" 
+            onmouseout="this.style.opacity = '1';">FILE UPLOAD</button>
         </form>
       </div>
       <img src="../static/selfie.png" alt="No File" height="370px" width="400px"></img>
