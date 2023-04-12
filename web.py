@@ -1,13 +1,29 @@
 from tkinter import Grid
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, flash, session, redirect, url_for
 import src
 import io
 from src.IOFile import *
 from src.algorithm import *
 from algorithm import *
 from timeit import timeit
+from werkzeug.utils import secure_filename
+from jinja2 import Environment
+import networkx as nx
+import json
 
 app = Flask(__name__)
+app.secret_key = 'stima'
+
+graph = {}
+matrix = []
+node = [""]
+buatAstar = []
+
+def jinja2_enumerate(iterable, start=0):
+    return enumerate(iterable, start=start)
+
+env = Environment()
+env.filters['enumerate'] = jinja2_enumerate
 
 @app.route('/')
 def home():
@@ -21,80 +37,193 @@ def map():
 def file_upload():
     return render_template('file_upload.html')
 
-# @app.route('/find_path', methods=['GET','POST'])
-# def find_path():
-#     if request.method == 'POST':
-#         # Retrieve the form data
-#         uploaded_file = request.files['file_data']
-#         start_node = request.form['start']
-#         goal_node = request.form['goal']
-#         algorithm = request.form['algorithm']
-        
-#         graph = {}
-#         matrix = []
-#         nodes = []
-
-#         # rest of the code
-#         convertToInit(uploaded_file, graph, nodes, matrix)
-        
-#         grid = algorithm(graph, matrix)
-        
-#         if algorithm == 'UCS':
-#             result = grid.ucs(start_node, goal_node)
-#         elif algorithm == 'A*':
-#             result = grid.astar(start_node, goal_node)    
-
-#         # Render the template with the result
-#         return render_template('result.html', result=result)
-#     else:
-#         return render_template('result.html')
-
 @app.route('/process_file', methods=['POST'])
 def process_file():
     # Get the uploaded file
-    uploaded_file = request.files['file']
-    file_path = os.path.join('test', uploaded_file.filename)
-    uploaded_file.save(file_path)
+    # uploaded_file = request.files['file']
+    # filename = secure_filename(uploaded_file.filename)
+    # file_path = os.path.join('test', uploaded_file.filename)
+    # uploaded_file.save(file_path)
+    
+    algorithm = request.form['algorithm']
+    file = request.files['file']
+    
+    # Check if a file was uploaded
+    if file.filename == '':
+        return render_template("no_file.html")
+    
+    filename = secure_filename(file.filename)
+    file_path = os.path.join('test', file.filename)
+    file.save(file_path)
+    session['file_path'] = file_path
+    session['algorithm'] = algorithm
 
     graph = ubahGraf(file_path)
     with open(file_path, 'r') as f:
         # nodes name
         line = f.readline()
         name = [str(x) for x in line.strip().split(',')]
-        
-    print(f"INI {len(name)}")
-        
-    choosen_algorithm = request.form['algorithm']
-    start_node = request.form['start']
-    goal_node = request.form['goal']
+
+    return render_template('start_node.html', name=name)
+
+@app.route('/exc_node', methods=['POST'])
+def exc_node():
+    algorithm = request.form['algorithm']
+    file_path = request.form['file_path']
     
-    start_node = int(start_node)
-    goal_node = int(goal_node)
+    graph = ubahGraf(file_path)
+    with open(file_path, 'r') as f:
+        # nodes name
+        line = f.readline()
+        name = [str(x) for x in line.strip().split(',')]
+
+    return render_template('start_node.html', algorithm=algorithm, file_path=file_path, name=name)
+
+@app.route('/exc_node2', methods=['POST'])
+def exc_node2():
+    algorithm = request.form['algorithm']
+    file_path = request.form['file_path']
+    start = request.form['start']
     
+    graph = ubahGraf(file_path)
+    with open(file_path, 'r') as f:
+        # nodes name
+        line = f.readline()
+        name = [str(x) for x in line.strip().split(',')]
+
+    return render_template('goal_node.html', algorithm=algorithm, file_path=file_path, name=name, start=start)
+
+@app.route('/start_node', methods=['POST'])
+def start_node():
+    algorithm = request.form['algorithm']
+    file_path = request.form['file_path']
+    start = request.form['start']
+    
+    if(start == ''):
+        return render_template('node_kosong.html', file_path=file_path, algorithm=algorithm)
+    
+    for i in start:
+        if not i.isdigit():
+            return render_template('right_number.html', file_path=file_path, algorithm=algorithm)
+    
+    graph = ubahGraf(file_path)
+    with open(file_path, 'r') as f:
+        # nodes name
+        line = f.readline()
+        name = [str(x) for x in line.strip().split(',')]
+       
+    start_node = int(start)
+    session['start'] = start_node
+    flag = False
+    for index, value in enumerate(name, start=1):
+        print(index)
+        print(value)
+        if index == start_node:
+            flag = True
+            
+    if (not flag):
+        return render_template('right_number.html', file_path=file_path, algorithm=algorithm)
+    
+    name.pop(start_node-1)
+    session['name'] = name
+    
+    return render_template('goal_node.html', name=name)
+
+@app.route('/result', methods=['POST'])
+def result():
+    algorithm = request.form['algorithm']
+    file_path = request.form['file_path']
+    start = request.form['start']
+    goal = request.form['goal']
+    
+    if(goal == ''):
+        return render_template('node_kosong2.html', file_path=file_path, algorithm=algorithm)
+    
+    for i in goal:
+        if not i.isdigit():
+            return render_template('right_number2.html', file_path=file_path, algorithm=algorithm)
+    
+    graph = ubahGraf(file_path)
+    with open(file_path, 'r') as f:
+        # nodes name
+        line = f.readline()
+        name = [str(x) for x in line.strip().split(',')]
+    
+    goal = int(goal)
+    start_node = int(start)
+    flag = False
+    for index, value in enumerate(name, start=1):
+        if index == goal:
+            flag = True
+            
+    if (not flag):
+        return render_template('right_number2.html', file_path=file_path, algorithm=algorithm, name=name)
+    
+    start_node = start_node - 1
+    goal_node = goal - 1
+    
+    if(goal_node>=start_node):
+        goal_node += 1
+
     # Plot graf awal
     path = []
     imgawal = plot(graph, name, path, "graphawal.png")
     imgGraph = "static/graphawal.png"
     
-    print(choosen_algorithm)
+    print(algorithm)
     
-    if choosen_algorithm == 'astar':
+    if algorithm == 'astar':
         astar_iteration, astar_cost, astar_path = astar(graph, start_node, goal_node, name)
         astar_time = timeit(lambda: astar(graph, start_node, goal_node, name), number=1) * 1000
-        result("A*", name, start_node, goal_node, astar_iteration, astar_cost, astar_path, astar_time)
+        # output = result("A*", name, start_node, goal_node, astar_iteration, astar_cost, astar_path, astar_time)
+        algo = "A*"
+        sn = name[start_node]
+        en = name[goal_node]
+        path = astar_path
+        cost = astar_cost
+        time = astar_time
+        it = astar_iteration
         img = plot(graph, name, astar_path, "astargraph.png")
         imgPath = "static/astargraph.png"
-    elif choosen_algorithm == 'ucs':
+    elif algorithm == 'ucs':
         # the shortest path UCS
         ucs_iteration, ucs_cost, ucs_path = ucs(graph, start_node, goal_node, name)
         ucs_time = timeit(lambda: ucs(graph, start_node, goal_node, name), number=1) * 1000
-        result("UCS", name, start_node, goal_node, ucs_iteration, ucs_cost, ucs_path, ucs_time)
+        # output = result("UCS", name, start_node, goal_node, ucs_iteration, ucs_cost, ucs_path, ucs_time)
+        algo = "A*"
+        sn = name[start_node]
+        en = name[goal_node]
+        path = ucs_path
+        cost = ucs_cost
+        time = ucs_time
+        it = ucs_iteration
         img = plot(graph, name, ucs_path, "ucsgraph.png")
         imgPath = "static/ucsgraph.png"
-    
-    # Render the result to a new HTML page
-    return render_template('result.html', imgGraph=imgGraph, imgPath=imgPath)
+        
+    return render_template('result.html', algo=algo, sn=sn, en=en, path=path, cost=cost, time=time, it=it, imgGraph=imgGraph,imgPath=imgPath)
 
+# @app.route('/map_2', methods =['POST'])
+# def map_2():
+#     return render_template("map.html")
+
+@app.route('/sendGraph', methods =['POST'])
+def sendGraph():
+    while (matrix):
+        matrix.pop(0)
+    for j in range(len(graph)):
+        matrix.append([0 for i in range(len(graph))])
+
+    return render_template('map_2.html', graph=graph, node=node)
+
+@app.route('/kirim_matriks', methods=['GET', 'POST'])
+def dapetMatriks():
+    info = json.loads(request.data)
+    #print(info)
+    #print(matrix)
+    if (info[0] != info[1]):
+        matrix[int(info[0])-1][int(info[1])-1] = 1
+        matrix[int(info[1])-1][int(info[0])-1] = 1
+    return "1"
 
 def process_uploaded_file(file):
     # Process the uploaded file as usual

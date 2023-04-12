@@ -4,7 +4,7 @@
     <title>My Website Title</title>
     <style>
         body {
-            background-color: #000000;
+            background-color: #24496E;
             <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
         }
         h1 {
@@ -12,17 +12,17 @@
             font-weight: bold;
             font-size: 40px;
             font-family: 'Poppins', sans-serif;
-            color : #000000;
-            border: 3px solid #FB6B90;
-            -webkit-text-stroke: 2px #FB6B90;
+            color : #24496E;
+            border: 3px solid #F8D669;
+            -webkit-text-stroke: 2px #F8D669;
             padding: 20px;
         }
         p {
             font-weight: bold;
             font-size: 20px;
             font-family: 'Poppins', sans-serif;
-            color : #FB6B90;
-            -webkit-text-stroke: 1px #FB6B90;
+            color : #F8D669;
+            -webkit-text-stroke: 1px #F8D669;
             padding: 5px;
         }
         label {
@@ -30,8 +30,8 @@
             font-weight: bold;
             font-size: 20px;
             font-family: 'Poppins', sans-serif;
-            color : #000000;
-            -webkit-text-stroke: 2px #FB6B90;
+            color : #24496E;
+            -webkit-text-stroke: 2px #F8D669;
             margin-top: 100px;
         }
         .input-container {
@@ -39,7 +39,7 @@
             overflow: hidden;
             display: inline-block;
             border-radius: 20px;
-            background-color: #FB6B90;
+            background-color: #F8D669;
             padding: 10px;
             margin-top: 0px;
         }
@@ -47,15 +47,15 @@
           font-weight: bold;
           font-size: 28px;
           font-family: 'Poppins', sans-serif;
-          color : #000000;
-          -webkit-text-stroke: 2px #FB6B90;
+          color : #24496E;
+          -webkit-text-stroke: 2px #F8D669;
         }
         /* Add a border around the images */
       img {
-        border: 1px solid #ccc;
-        justify-content = center;
+        justify-content: center;
+        align-items: flex-end;
         margin: 5px 5pc 5px 5px;
-        transform: translateX(3.5%);
+        transform: translateX(10.5%);
       }
       
       /* Add some margin and padding to the images */
@@ -107,17 +107,21 @@
     <div class="div1">
       <div class="div2">
         <h2> First Graph </h2>
-        <img src={{ imgGraph }} >
+        <img src={{ imgGraph }} width="500px">
       </div>
-
+      <div class="div2">
+        <h2>  </h2>
+        <img src="../static/menjulang.png" alt="No File" height="400px"></img>
+      </div>
       <div class="div2">
           <h2> {{ algo }} Graph</h2>
-          <img src={{ imgPath}}>
+          <img src={{ imgPath}} width="500px">
       </div>
     </div>
 
-    <div class = "image-wrapper" style="display: flex;" justify-content: "center">
-    </div>
+    <h1>
+      OUTPUT
+    </h1>
     <div>
       <p>Start node: {{ sn }}</p>
     </div>

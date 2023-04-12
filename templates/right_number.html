@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>No File Uploaded</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #24496E;
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+        }
+
+        h2 {
+          text-align: center;
+          font-weight: bold;
+          font-size: 40px;
+          font-family: 'Poppins', sans-serif;
+          color : #24496E;
+          -webkit-text-stroke: 2px #F8D669;
+          margin-top: 40px;
+        }
+        form {
+          text-align: center;
+          margin-top: 30px;
+        }
+        button {
+          background-color: #F8D669;
+          font-weight: bold;
+          font-size: 14px;
+          font-family: 'Poppins', sans-serif;
+          border: none;
+          border-radius: 30px;
+          color: #24496E;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          margin: 6px 6px 6px 6px;
+          cursor: pointer;
+          width: 160px;
+          height: 45px;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Choose The Right Node</h2>
+    <div class="image-container">
+        <img src="../static/mad.png" alt="right node" height="400">
+    </div>
+    <form action="{{ url_for('exc_node') }}" method="POST">
+        <input type="hidden" name="file_path" value="{{ session['file_path'] }}">
+        <input type="hidden" name="algorithm" value="{{ session['algorithm'] }}">
+        <button type="submit">Choose Node</button>
+    </form>
+</body>
+</html>

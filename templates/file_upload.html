@@ -4,7 +4,7 @@
   <title>File Upload</title>
   <style>
     body {
-        background-color: #000000;
+        background-color: #24496E;
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     }
     h1 {
@@ -12,24 +12,24 @@
         font-weight: bold;
         font-size: 40px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        border: 3px solid #FB6B90;
-        -webkit-text-stroke: 2px #FB6B90;
+        color : #24496E;
+        border: 3px solid #F8D669;
+        -webkit-text-stroke: 2px #F8D669;
         padding: 20px;
     }
     h2 {
         font-weight: bold;
         font-size: 24px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        -webkit-text-stroke: 2px #FB6B90;
-        margin-top: 50px;
+        color : #24496E;
+        -webkit-text-stroke: 2px #F8D669;
+        margin-top: 70px;
     }
     .file-input-container {
         overflow: hidden;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
         padding: 10px;
         margin-top: 0px;
     }
@@ -39,7 +39,7 @@
         overflow: hidden;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
         padding: 5px;
         margin-top: 5px;
     }
@@ -51,14 +51,6 @@
         right: 0;
         top: 0;
     }
-
-    .kiri{
-        justify-content : flex-start;
-    }
-
-    .kanan{
-        justify-content : flex-end;
-    }
     
     .file-input-label {
         display: block;
@@ -69,13 +61,13 @@
     }
 
     button {
-        background-color: #FB6B90;
+        background-color: #F8D669;
         font-weight: bold;
         font-size: 14px;
         font-family: 'Poppins', sans-serif;
         border: none;
         border-radius: 30px;
-        color: #000000;
+        color: #24496E;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;
@@ -89,13 +81,14 @@
         display: block;
         margin: 0 auto;
         width: 200px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
     }
     .dropdown option {
         font-size: 18px;
     }
     .dropdown-container {
         display: flex;
+        justify-content: center;
         margin-top: 0px;
         height: 45px; /* Adjust the height as needed */
     }
@@ -104,15 +97,15 @@
         font-weight: bold;
         font-size: 20px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        -webkit-text-stroke: 2px #FB6B90;
+        color : #24496E;
+        -webkit-text-stroke: 2px #F8D669;
         margin-top: 100px;
     }
     .input-container {
         overflow: hidden;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
         padding: 10px;
         margin-top: 0px;
     }
@@ -124,7 +117,7 @@
         justify-content: flex-end;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
         padding: 10px;
         margin-top: 0px;
     }
@@ -133,8 +126,8 @@
         font-weight: bold;
         font-size: 20px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        -webkit-text-stroke: 2px #FB6B90;
+        color : #24496E;
+        -webkit-text-stroke: 2px #F8D669;
         margin-top: 10px;
         position: absolute;
         top: 30%;
@@ -151,7 +144,7 @@
         justify-content: flex-end;
         display: inline-block;
         border-radius: 20px;
-        background-color: #FB6B90;
+        background-color: #F8D669;
         padding: 10px;
         margin-top: 0px;
     }
@@ -160,8 +153,8 @@
         font-weight: bold;
         font-size: 20px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        -webkit-text-stroke: 2px #FB6B90;
+        color : #24496E;
+        -webkit-text-stroke: 2px #F8D669;
         margin-top: 10px;
         position: absolute;
         top: 40%;
@@ -175,82 +168,81 @@
         font-weight: bold;
         font-size: 20px;
         font-family: 'Poppins', sans-serif;
-        color : #000000;
-        -webkit-text-stroke: 2px #FB6B90;
+        color : #24496E;
+        -webkit-text-stroke: 2px #F8D669;
         margin-top: 10px;
     }
     .similar-button {
-        background-color: #FB6B90;
+        background-color: #F8D669;
         font-weight: bold;
         font-size: 14px;
         font-family: 'Poppins', sans-serif;
-        transform: translateX(530%);
         border: none;
         border-radius: 50px;
-        color: #000000;
+        color: #24496E;
         padding: 15px 32px;
         text-align: center;
         text-decoration: none;
-        display: inline-block;
-        margin-top: 100px;
+        margin-top: 70px;
         cursor: pointer;
         width: 120px;
         height: 45px;
+        justify-content: center;
     }
-    .flash {
-        color: red;
-        font-family: 'Poppins', sans-serif;
-        font-size: 12px;
-        transform: translateX(43.5%);
+    form {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .div1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    img {
+        justify-content: center;
+        align-items: flex-end;
+        margin: 90px 5pc 5px 5px;
+        transform: translateX(10.5%);
+      }
+
+    .div2 {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
     }
     
   </style>
 </head>
 <body>
     <h1>File Upload</h1>
-    <form action="/process_file" method="post" enctype="multipart/form-data">
-        <div class = "kiri">
-            <h2>
-                Choose a File
-            </h2>
-            <div class="file-input-container">
-                <label class="file-input-label" for="file-input" style="display: inline-block;" ></label>
-                <input type="file" id="file-input" name="file">
-            </div> 
-        </div>
-        
-        <div class = "kiri">
-            <h2>
-                Choose an Algorithm
-            </h2>
-            <div class="dropdown-container">
-                <select class="input-container" name="algorithm" >
-                    <option value="astar">A* Algorithm</option>
-                    <option value="ucs">UCS Algorithm</option>
-                </select>
+    <div class="div1">
+        <img src="../static/teddy.png" alt="Teddy" height="290px" width="280px"></img>
+        <form action="/process_file" method="post" enctype="multipart/form-data">
+            <div class = "kiri">
+                <h2>
+                    Choose a File
+                </h2>
+                <div class="file-input-container">
+                    <label class="file-input-label" for="file-input" style="display: inline-block;" ></label>
+                    <input type="file" id="file-input" name="file">
+                </div> 
             </div>
-        </div>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div id = "flash_container">
-                    <ul class="flash">
-                        {% for message in messages %}
-                            <li>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
+            
+            <div class = "kiri">
+                <h2>
+                    Choose an Algorithm
+                </h2>
+                <div class="dropdown-container">
+                    <select class="input-container" name="algorithm" >
+                        <option value="astar">A* Algorithm</option>
+                        <option value="ucs">UCS Algorithm</option>
+                    </select>
                 </div>
-            {% endif %}
-        {% endwith %}
-        <input class="similar-button" type="submit" value="Next" cursor="pointer">
-    </form>
-    <script>
-        // Get all flash messages
-        var flashContainer = document.getElementById('flash-container');
+            </div>
+            <input class="similar-button" type="submit" value="Next" cursor="pointer">
+        </form>
+        <img src="../static/nyantey.png" alt="Santai" height="300px" width="300px"></img>
+    </div>
     
-        // Set a timer to remove each flash message after 2 seconds
-        setTimeout(function() {
-            flashContainer.parentNode.removeChild(flashContainer);
-        }, 2000);
-    </script>
 </body>
 </html>
