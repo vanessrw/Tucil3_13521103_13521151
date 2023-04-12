@@ -39,7 +39,7 @@
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            margin: 6px 4px;
+templates/node_8.html            margin: 6px 4px;
             cursor: pointer;
             width: 160px;
             height: 45px;
@@ -64,25 +64,39 @@
           center: Latlng,
         });
 
-        alert("haha");
-
         let edgeStartNode = null; // add this line
+        let edgeEndNode = null;
         let nodes = []; // to keep track of selected nodes
         let edges = []; // to keep track of selected edges
         map.addListener("click", (mapsMouseEvent) => {
           if (edgeMode) {
-            alert("masuk");
             // Get the ID of the clicked marker
             let clickedId = null;
-            for (let i = 0; i < markers.length; i++) {
+            /*for (let i = 0; i < markers.length; i++) {
                 if (markers[i].getPosition().equals(mapsMouseEvent.latLng)) {
                     clickedId = markers[i].getTitle();
                     break;
                 }
+            }*/
+            for (let i = 0; i < markers.length; i++) {
+              const markerPosition = markers[i].getPosition();
+              const clickPosition = mapsMouseEvent.latLng;
+
+              // calculate distance between click position and marker position
+              const distance = google.maps.geometry.spherical.computeDistanceBetween(markerPosition, clickPosition);
+
+              // if the distance is less than the click radius, select the marker
+              if (distance <= 100) {
+                clickedId = markers[i].getTitle();
+                break;
+              }
             }
+            alert(clickedId)
             if (clickedId == null) {
                 alert("Please select a valid node.");
                 return;
+            } else {
+                alert("kena");
             }
     
             // If this is the first node being selected, save it and prompt the user to select the second node
@@ -117,24 +131,22 @@
             xhr.open('POST', URL);
             xhr.send(sender);
             id++;
-          } else {
-            // Add a new marker
-            let marker = new google.maps.Marker({
-              position: mapsMouseEvent.latLng,
-              map,
-              title: id.toString(),
-            });
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
-            markers.push(marker);
-
-            // Send the new node to the server
-            const URL = '/add-node';
-            const xhr = new XMLHttpRequest();
-            sender = JSON.stringify([id, mapsMouseEvent.latLng]);
-            xhr.open('POST', URL);
-            xhr.send(sender);
-            id++;
           }
+          // Add a new marker
+          let marker = new google.maps.Marker({
+            position: mapsMouseEvent.latLng,
+            map,
+            title: id.toString(),
+          });
+          markers.push(marker);
+
+          // Send the new node to the server
+          const URL = '/add-node';
+          const xhr = new XMLHttpRequest();
+          sender = JSON.stringify([id, mapsMouseEvent.latLng]);
+          xhr.open('POST', URL);
+          xhr.send(sender);
+          id++;
         });
       }
     </script>
@@ -156,6 +168,7 @@
     <button id="add-edge-btn" 
         style="transition: opacity 0.2s;" 
         onmouseover="this.style.opacity = '0.8';" 
-        onmouseout="this.style.opacity = '1';">Add Edge</button>
+        onmouseout="this.style.opacity = '1';"
+        onclick="startEdgeMode()">Add Edge</button>
   </body>
 </html>

@@ -33,8 +33,9 @@ def is_valid_input_format(filename):
             return False
 
 
-def parse_input_file(file_path):
+def parse_input_file(filepath):
     # read input file
+    file_path = os.path.join('test', filepath)
     with open(file_path) as f:
         n = int(f.readline().strip())
         coords = {}
@@ -56,12 +57,13 @@ def parse_input_file(file_path):
                 result[i][j] = 0
 
     # write the result to a new file
-    parsed_file_path = 'parsed.txt'
+    filename = 'parsed.txt'
+    parsed_file_path = 'test/parsed.txt'
     with open(parsed_file_path, 'w') as f:
         f.write(','.join(index_to_name[i] for i in range(n)) + '\n')
         for i in range(n):
             f.write(' '.join(str(x) for x in result[i]) + '\n')
-    return parsed_file_path
+    return filename
 
 
 # ----- INPUT -----
@@ -117,11 +119,7 @@ def inputFile():
             continue
         
 def ubahGraf(filepath):
-    try:
-        if is_valid_input_format(filepath):
-                # if format is valid, parse the file
-            filepath = parse_input_file(filepath)
-                # print("File parsed successfully.")        
+    try:       
         with open(filepath, 'r') as f:
             # nodes name
             line = f.readline()

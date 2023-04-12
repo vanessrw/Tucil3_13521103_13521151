@@ -153,15 +153,3 @@ class Graph:
 
     def sorting(self, element):
         return element[0]
-
-
-filename = 'test/alun2.txt'
-graph = Graph(filename)
-adjm = graph.read_graph(filename)
-print(adjm)
-
-adj_matrix = graph.adj_matrix
-output_file = 'adj_matrix.txt'
-
-for row in adj_matrix:
-    print(row)

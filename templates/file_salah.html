@@ -34,7 +34,7 @@
           text-align: center;
           text-decoration: none;
           display: inline-block;
-          margin: 6px 6px 6px 6px;
+          margin: 6px 4px;
           cursor: pointer;
           width: 160px;
           height: 45px;
@@ -47,14 +47,12 @@
     </style>
 </head>
 <body>
-    <h2>Choose The Right Node</h2>
+    <h2>Wrong File Input Format</h2>
     <div class="image-container">
-        <img src="../static/toa.png" alt="right node" height="400">
+        <img src="../static/minionshocked.png" alt="No File" height="400">
     </div>
-    <form action="{{ url_for('exc_node') }}" method="POST">
-        <input type="hidden" name="file_path" value="{{ session['file_path'] }}">
-        <input type="hidden" name="algorithm" value="{{ session['algorithm'] }}">
-        <button type="submit">Choose Node</button>
+    <form action="{{ url_for('home') }}" method="POST">
+        <button type="button" onclick="location.href='{{ url_for('home') }}'">Back To Menu</button>
     </form>
 </body>
 </html>

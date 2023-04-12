@@ -48,13 +48,59 @@ def process_file():
     algorithm = request.form['algorithm']
     file = request.files['file']
     
+    file_path = os.path.join('test', file.filename)
+    
     # Check if a file was uploaded
     if file.filename == '':
         return render_template("no_file.html")
     
-    filename = secure_filename(file.filename)
-    file_path = os.path.join('test', file.filename)
-    file.save(file_path)
+    if is_valid_input_format(file_path):
+        # if format is valid, parse the file
+        filepath = parse_input_file(file.filename)
+        file_path = os.path.join('test', filepath)
+    else:
+        file_path = os.path.join('test', file.filename)
+        with open(file_path, 'r') as f:
+            # nodes name
+            line = f.readline()
+            name = [str(x) for x in line.strip().split(',')]
+            size = len(name)
+            if size < 8:
+                return render_template('file_salah.html')
+            
+            matrix = []
+            for i in range(size):
+                line = f.readline()
+                row = line.strip().split()
+                if len(row) != size:
+                    return render_template('file_salah.html')
+                # check all elements are non negative
+                try:
+                    row = [float(element) for element in row]
+                    if any(element < 0 for element in row):
+                        return render_template('file_salah.html')
+                    matrix.append(row)
+                except ValueError:
+                    return render_template('file_salah.html')
+            
+            # check if matrix symmetric
+            for i in range(size):
+                for j in range(i+1, size):
+                    if matrix[i][j] != matrix[j][i]:
+                        return render_template('file_salah.html')
+            
+        
+                
+        # check if matrix symmetric
+        for i in range(size):
+            for j in range(i+1, size):
+                if matrix[i][j] != matrix[j][i]:
+                    print("tai4")
+                    return render_template('file_salah.html')
+    
+        filename = secure_filename(file.filename)
+        file_path = os.path.join('test', file.filename)
+        file.save(file_path)
     session['file_path'] = file_path
     session['algorithm'] = algorithm
 
@@ -203,18 +249,14 @@ def result():
         
     return render_template('result.html', algo=algo, sn=sn, en=en, path=path, cost=cost, time=time, it=it, imgGraph=imgGraph,imgPath=imgPath)
 
-# @app.route('/map_2', methods =['POST'])
-# def map_2():
-#     return render_template("map.html")
-
-@app.route('/sendGraph', methods =['POST'])
-def sendGraph():
-    while (matrix):
-        matrix.pop(0)
-    for j in range(len(graph)):
-        matrix.append([0 for i in range(len(graph))])
-
-    return render_template('map_2.html', graph=graph, node=node)
+#python route
+@app.route('/this-route', methods=['GET', 'POST'])
+def thisRoute():
+    information = json.loads(request.data )
+    graph[str(information[0])] = [information[1]["lat"], information[1]["lng"]]
+    node.append(str(information[0]))
+    #print(graph)
+    return "1"
 
 @app.route('/kirim_matriks', methods=['GET', 'POST'])
 def dapetMatriks():
@@ -225,6 +267,24 @@ def dapetMatriks():
         matrix[int(info[0])-1][int(info[1])-1] = 1
         matrix[int(info[1])-1][int(info[0])-1] = 1
     return "1"
+
+@app.route('/kirim_simpul', methods=['GET', 'POST'])
+def dapetSimpul():
+    while (buatAstar):
+        buatAstar.pop(0)
+    info = json.loads(request.data)
+    buatAstar.append(info[0])
+    buatAstar.append(info[1])
+    return "1"
+
+@app.route('/sendGraph', methods =['POST'])
+def sendGraph():
+    while (matrix):
+        matrix.pop(0)
+    for j in range(len(graph)):
+        matrix.append([0 for i in range(len(graph))])
+
+    return render_template('addEdge.html', graph=graph, node=node)
 
 def process_uploaded_file(file):
     # Process the uploaded file as usual
@@ -296,19 +356,6 @@ def process_text_file(content):
 if __name__ == '__main__':
     app.run(debug=True)
 
-# from flask import Flask, render_template, request
-# import networkx as nx
-
-# app = Flask(__name__)
-
-# # function to convert adjacency matrix to graph
-# def adjacency_matrix_to_graph(matrix):
-#     G = nx.Graph()
-#     for i, row in enumerate(matrix):
-#         for j, weight in enumerate(row):
-#             if weight != 0:
-#                 G.add_edge(i+1, j+1, weight=weight)
-#     return G
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
